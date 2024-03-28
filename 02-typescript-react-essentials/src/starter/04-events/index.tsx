@@ -1,9 +1,45 @@
+import { useState } from "react";
+
+type Person = {
+    name: string;
+};
+
 function Component() {
-  return (
-    <div>
-      <h2>React & Typescript</h2>
-      <h2>Events</h2>
-    </div>
-  );
+    const [text, setText] = useState("");
+    const [email, setEmail] = useState("");
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setEmail(e.target.value);
+    };
+
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        const formData = new FormData(e.currentTarget);
+        const data = Object.fromEntries(formData);
+        const text = formData.get("text") as string;
+        const person: Person = { name: data.text as string };
+    };
+
+    return (
+        <section>
+            <h2>events example</h2>
+            <form onSubmit={handleSubmit} className="form">
+                <input
+                    type="text"
+                    className="form-input mb-1"
+                    value={text}
+                    onChange={(e) => setText(e.target.value)}
+                />
+                <input
+                    type="email"
+                    className="form-input mb-1"
+                    value={email}
+                    onChange={handleChange}
+                />
+                <button type="submit" className="btn btn-block">
+                    submit
+                </button>
+            </form>
+        </section>
+    );
 }
 export default Component;
